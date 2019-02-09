@@ -1,4 +1,4 @@
-document.getElementById("connected").style.display = "none";
+//document.getElementById("connected").style.display = "none";
 console.log("javascript connected");
 let session;
 
@@ -9,8 +9,8 @@ function connect(url, username, password) {
   });
   
   session.on('connect', () => {
-    document.getElementById("connecting").style.display = "none";
-    document.getElementById("connected").style.display = "block";
+    //document.getElementById("connecting").style.display = "none";
+    //document.getElementById("connected").style.display = "block";
   });
   
   session.on('message', (topic, message) => {
@@ -34,3 +34,5 @@ function subscribe(topic) {
   session.subscribe(topic);
   return false;
 }
+
+connect("wss://mr4b11zr953.messaging.mymaas.net:8443", "solace-cloud-client", "ucaltv4mc6q3kd2qfbibv0bpet");
