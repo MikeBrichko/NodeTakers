@@ -3,12 +3,16 @@ package com.example.william.nodatracker;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.drawable.AnimationDrawable;
 import android.provider.MediaStore;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -41,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
 
     private RequestQueue queue;
 
+    private EditText editText;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,10 +54,21 @@ public class MainActivity extends AppCompatActivity {
 
         queue = Volley.newRequestQueue(this);
 
-        final Button button = (Button) findViewById(R.id.captureFront);
+        dispatchTakePictureIntent();
+
+        editText = (EditText)findViewById(R.id.editText);
+
+        final Button button = (Button) findViewById(R.id.retake_photo);
         button.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 dispatchTakePictureIntent();
+            }
+        });
+
+        final Button button2 = (Button) findViewById(R.id.send_message);
+        button2.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                send_message(editText.getText().toString());
             }
         });
     }
@@ -119,11 +136,7 @@ public class MainActivity extends AppCompatActivity {
                         }catch(JSONException e){
                             System.out.println("nothing found");
                         }
-
-                        if(found != ""){
-                            send_message(found);
-                        }
-
+                        editText.setText(found, TextView.BufferType.EDITABLE);
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -140,27 +153,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void send_message(String mes) {
 
-        RequestQueue queue = Volley.newRequestQueue(this); //very bad lol hackathon code
-
         JSONObject myrequest = null;
 
         try {
-
             myrequest = new JSONObject().put("message", mes).put("topic","bitch");
-
         }catch(JSONException e){
             Toast.makeText(MainActivity.this,"REQUEST JSON EXCeption",
                     Toast.LENGTH_LONG).show();
         }
-
-        String response  = null;
 
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url_sub, myrequest,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
 
-                        //do nothing for not
+                        Toast.makeText(MainActivity.this,"Text sent Successfully!",
+                                Toast.LENGTH_LONG).show();
 
                     }
                 }, new Response.ErrorListener() {
@@ -171,7 +179,6 @@ public class MainActivity extends AppCompatActivity {
                 System.out.println(error.getMessage());
             }
         });
-
         // Add the request to the RequestQueue.
         queue.add(jsonObjectRequest);
     }
