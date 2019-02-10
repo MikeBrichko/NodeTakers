@@ -1,9 +1,9 @@
 //document.getElementById("connected").style.display = "none";
 console.log("javascript connected");
 
-var doc = document.getElementById('doc');
-doc.contentEditable = true;
-doc.focus();
+// var doc = document.getElementById('doc');
+// doc.contentEditable = true;
+// doc.focus();
 
 let session;
 
@@ -19,12 +19,14 @@ function connect(url, username, password) {
   });
   
   session.on('message', (topic, message) => {
-    let table = document.getElementById("received");
-    let row = table.insertRow();
-    let topicCell = row.insertCell(0);
-    let messageCell = row.insertCell(1);
-    topicCell.innerHTML = topic;
-    messageCell.innerHTML = message;
+    console.log(message);
+    var object = new TextDecoder("utf-8").decode(message);
+    object = JSON.parse(object);
+    console.log(object);
+
+    quill.insertText(object.index,object.char+"");
+    // topicCell.innerHTML = topic;
+    // messageCell.innerHTML = message;
   });
   
   return false;
@@ -42,6 +44,15 @@ function subscribe(topic) {
 
 connect("wss://mr4b11zr953.messaging.mymaas.net:8443", "solace-cloud-client", "ucaltv4mc6q3kd2qfbibv0bpet");
 
-$('#doc').keypress(function(event){
-  publish('typing', String.fromCharCode(event.which));
+$('#editor').keypress(function(event){
+  console.log(event.target.innerText.substring(event.target.innerText.length-1));
+  var range = quill.getSelection();
+  console.log(range);
+  // var string = String.fromCharCode(event.which) + "hello";
+  // console.log(string);
+  var toPass = JSON.stringify({'char':String.fromCharCode(event.which),'index':range.index,'replaceAmount':range.length});
+  console.log(toPass);
+  publish('typing', toPass );
 })
+
+// "{'char':"+String.fromCharCode(event.which)+",'index':"+ range.index+", 'replaceAmount': "+range.length+"}"
