@@ -3,7 +3,6 @@ package com.example.william.nodatracker;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.drawable.AnimationDrawable;
 import android.provider.MediaStore;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -11,7 +10,6 @@ import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,8 +22,6 @@ import com.android.volley.toolbox.Volley;
 
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -156,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
         JSONObject myrequest = null;
 
         try {
-            myrequest = new JSONObject().put("message", mes).put("topic","bitch");
+            myrequest = new JSONObject().put("message", mes).put("topic","typing"); //hard coded topic lol
         }catch(JSONException e){
             Toast.makeText(MainActivity.this,"REQUEST JSON EXCeption",
                     Toast.LENGTH_LONG).show();
