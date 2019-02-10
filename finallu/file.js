@@ -41,3 +41,7 @@ function subscribe(topic) {
 }
 
 connect("wss://mr4b11zr953.messaging.mymaas.net:8443", "solace-cloud-client", "ucaltv4mc6q3kd2qfbibv0bpet");
+
+$('#doc').keypress(function(event){
+  publish('typing', String.fromCharCode(event.which));
+})
