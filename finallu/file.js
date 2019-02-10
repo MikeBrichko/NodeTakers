@@ -6,6 +6,10 @@ console.log("javascript connected");
 // doc.focus();
 
 let session;
+var queue = new Queue();
+
+var quillText = quill.getText();
+
 
 function connect(url, username, password) {
   session = mqtt.connect(url, {
@@ -26,7 +30,14 @@ function connect(url, username, password) {
     try{
       newObject=JSON.parse(object);
       console.log("try working")
-      quill.insertText(newObject.index,newObject.char+"");
+      if(newObject.char==8){
+        console.log("backspace called");
+        quill.deleteText(newObject.index-1, 1, 'api');
+        console.log("backspace done");
+      }
+      else{
+        quill.insertText(newObject.index,newObject.char);
+      }
     }
     catch(e){
       console.log("in the catch")
@@ -50,16 +61,34 @@ function subscribe(topic) {
 }
 
 connect("wss://mr4b11zr953.messaging.mymaas.net:8443", "solace-cloud-client", "ucaltv4mc6q3kd2qfbibv0bpet");
+$('#editor').on("keydown", function(e){
+
+
+  console.log("keydown");
+    if( e.which == 8 ){ // 8 == backspace
+      var range = quill.getSelection();
+      var toPass = JSON.stringify({'char':e.which,'index':range.index,'replaceAmount':0});
+      queue.add_function(function(){
+        publish('typing', toPass);
+      });
+      e.preventDefault();
+      e.stopImmediatePropagation();
+      e.stopPropagation();
+    
+    }
+});
 
 $('#editor').keypress(function(event){
+  event.handled = true;
   console.log(event.target.innerText.substring(event.target.innerText.length-1));
   var range = quill.getSelection();
   console.log(range);
-  // var string = String.fromCharCode(event.which) + "hello";
-  // console.log(string);
   var toPass = JSON.stringify({'char':String.fromCharCode(event.which),'index':range.index,'replaceAmount':range.length});
   console.log(toPass);
-  publish('typing', toPass );
+  queue.add_function(function(){
+    publish('typing', toPass);
+  });
+  quillText = quill.getText();
+  return false;
 })
 
-// "{'char':"+String.fromCharCode(event.which)+",'index':"+ range.index+", 'replaceAmount': "+range.length+"}"
