@@ -22,14 +22,18 @@ function connect(url, username, password) {
     console.log(message);
     var object = new TextDecoder("utf-8").decode(message);
     console.log(object);
-    if(!typeof(object)=='string'){
-      object = JSON.parse(object);
+    var newObject=null;
+    try{
+      newObject=JSON.parse(object);
+      console.log("try working")
+      quill.insertText(newObject.index,newObject.char+"");
     }
-    console.log(object);
-
-    quill.insertText(object.index,object.char+"");
-    // topicCell.innerHTML = topic;
-    // messageCell.innerHTML = message;
+    catch(e){
+      console.log("in the catch")
+      newObject=object;
+      let length = quill.getLength();
+      quill.insertText(length,newObject);
+    }
   });
   
   return false;
