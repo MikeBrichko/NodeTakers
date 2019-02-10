@@ -3,26 +3,36 @@ p     { display: table-row;  }
 label { display: table-cell; }
 input { display: table-cell; }
 
+#content {
+    position: relative;
+}
+#content img {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+}
+
 #title {
 	text-align: center;
 	margin: 20px;
 	padding: 10px;
-	text-shadow: -1px -1px 1px #000, 1px 1px 1px #ccc;
-	color: #135589;
+	color: black;
+	font-family: Kodchasan;
+	font-size: 69px;
 }
 
 #editor {
-	padding-left: 50px;
-	padding-right: 50px;
-	padding-top: 30px;
-	border: solid 5px;
-	border-color: #135589;
+	padding-left: 75px;
+	padding-right: 75px;
+	padding-top: 75px;
+	border: solid 2px;
+	border-color: block;
 	background-color: white;
 }
 
 .description {
 	text-align: center;
-	color: #2A93D5;
+	color: black;
 }
 
 #logo {
@@ -48,7 +58,7 @@ body {
   margin-left: 150px;
   margin-right: 150px;
   padding: 0;
-  background: #AED9DA;
+  background: #ffd27f;
 }
 
 .header {
