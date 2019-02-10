@@ -21,7 +21,10 @@ function connect(url, username, password) {
   session.on('message', (topic, message) => {
     console.log(message);
     var object = new TextDecoder("utf-8").decode(message);
-    object = JSON.parse(object);
+    console.log(object);
+    if(!typeof(object)=='string'){
+      object = JSON.parse(object);
+    }
     console.log(object);
 
     quill.insertText(object.index,object.char+"");
