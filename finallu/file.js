@@ -1,5 +1,10 @@
 //document.getElementById("connected").style.display = "none";
 console.log("javascript connected");
+
+var doc = document.getElementById('doc');
+doc.contentEditable = true;
+doc.focus();
+
 let session;
 
 function connect(url, username, password) {
