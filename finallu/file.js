@@ -92,3 +92,5 @@ $('#editor').keypress(function(event){
   return false;
 })
 
+subscribe('typing');
+
