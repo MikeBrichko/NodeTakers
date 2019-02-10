@@ -34,7 +34,9 @@ public class MainActivity extends AppCompatActivity {
 
     private String url ="https://vision.googleapis.com/v1/images:annotate?key=";
 
-    private String url_sub = "https://e8c6715c.ngrok.io/postPic";
+    private String base_ngkok = "https://1a4dde59.ngrok.io";
+
+    private String url_sub = base_ngkok + "/postPic";
 
     private MqttClient mqttClient = null;
     private MqttConnectOptions connOpts = null;
@@ -86,7 +88,7 @@ public class MainActivity extends AppCompatActivity {
             Bitmap imageBitmap = (Bitmap) extras.get("data");
 
             ByteArrayOutputStream stream = new ByteArrayOutputStream();
-            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 70, stream);
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
 
             String imgString = Base64.encodeToString(stream.toByteArray(),
                     Base64.NO_WRAP);
